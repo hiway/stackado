@@ -1,0 +1,15 @@
+application: gtdstack
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: .*
+  script: gtd_appengine.py
+
+inbound_services:
+- xmpp_message
+- mail
+
+builtins:
+- datastore_admin: on
