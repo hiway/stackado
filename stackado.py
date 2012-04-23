@@ -29,6 +29,23 @@ class TodoStack:
     # important for our application.
     stack = []
 
+    # Now add a few functions that make things easier for us to
+    # manipulate the stack.
+    def add(self, task):
+        """Adds a task to stack. Always converts text string to UTF-8."""
+        # Create a unicode object from the text string (or utf object)
+        task = task.encode('utf-8')
+        # Save into the stack
+        self.stack.append(task)
+
+    def done(self):
+        """Marks a task as done, and removes it from the stack.
+        Returns a UTF-8 object."""
+        # Temporarily store the task
+        task = self.stack.pop()
+        # Return it to the calling function
+        return task
+
 
 
 # Also, let us add some code here which will be run whenever this file is
@@ -41,7 +58,7 @@ if __name__ == '__main__':
     mystack = TodoStack()
 
     # Add an item into the stack
-    mystack.stack.append(u'make this less stupid')
+    mystack.add(u'this is a tad bit better')
 
     # That little u in front of the string tells Python that we are dealing
     # with Unicode strings - they let us handle all languages and characters.
@@ -51,7 +68,7 @@ if __name__ == '__main__':
     print mystack.stack
 
     # Remove the item
-    item = mystack.stack.pop()
+    item = mystack.done()
 
     # Popping a stack returns the topmost item
     print item
