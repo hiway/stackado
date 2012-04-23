@@ -34,11 +34,15 @@ class TodoStack:
     # change.
     undo_list = []
 
+    # Keeps a list of redo actions - whatever is undone can be redone
+    # However, it will be wiped out every time save_undo() is called
+    redo_list = []
+
     # Now add a few functions that make things easier for us to
     # manipulate the stack.
     def add(self, task):
         """Adds a task to stack. Always converts text string to UTF-8."""
-        self.save_state()
+        self.save_undo()
 
         task = task.encode('utf-8')
         self.stack.append(task)
@@ -46,25 +50,33 @@ class TodoStack:
     def done(self):
         """Marks a task as done, and removes it from the stack.
         Returns a UTF-8 object."""
-        self.save_state()
+        self.save_undo()
 
         task = self.stack.pop()
         return task
 
     def next(self):
         """Returns the topmost task in the stack."""
-        self.save_state()
+        self.save_undo()
 
         task = self.stack[-1]
         return task
 
-    def save_state(self):
+    def save_undo(self, reset_redo=True):
         """Saves current state of stack into undo_list.
         Versions of our stack are stored into another stack ;)
         """
         current_state = copy.deepcopy(self.stack)
         self.undo_list.append(current_state)
 
+        if reset_redo is True:
+            self.redo_list = []
+
+
+    def save_redo(self):
+        """Saves current state of stack into redo_list."""
+        current_state = copy.deepcopy(self.stack)
+        self.redo_list.append(current_state)
 
     def undo(self):
         """Reverses last action, allows user to make mistakes."""
@@ -74,15 +86,28 @@ class TodoStack:
         # be forced to type out everything once again if you
         # accidentally mark a task as done.
         #
-        # We are adding this feature early-on because it needs to be
-        # planned in advance: retro-fitting is usually not a fun task.
-        #
-        # Before we implement this, we need to store the previous
-        # actions or states so that we know what to reverse.
-
-        # Coming back... since we have the whole state stored, we
+        # Since we have the whole state stored in self.undo_list, we
         # simply restore it back!
-        self.stack = self.undo_list.pop()
+        try:
+            # store current state in redo_list
+            self.save_redo()
+            # get previous state from undo_list
+            self.stack = self.undo_list.pop()
+        except:
+            raise
+
+    def redo(self):
+        """Un-does undo. Gets reset by save_undo()
+        A user can call redo only if they are not changing the state
+        in between consecutive undo and redo."""
+        try:
+            # save current state into undo_list
+            self.save_undo(reset_redo=False)
+            # get state from redo_list
+            self.stack = self.redo_list.pop()
+        except:
+            raise
+
 
 
 # Also, let us add some code here which will be run whenever this file is
@@ -100,15 +125,12 @@ if __name__ == '__main__':
     mystack.add(u'blabber a bit')
 
     print mystack.stack
-    print mystack.undo_list
     print "-"*30
 
     mystack.undo()
     print mystack.stack
-    print mystack.undo_list
     print "-"*30
 
-    mystack.undo()
+    mystack.redo()
     print mystack.stack
-    print mystack.undo_list
     print "-"*30
