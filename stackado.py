@@ -14,6 +14,7 @@
 
 # We'll be using json to save user's data into files for persistent memory.
 import json
+import copy
 
 # Let us define a class to hold the data and manipulate it. Having a class
 # allows us to create one instance of the object and hold it in memory
@@ -29,28 +30,41 @@ class TodoStack:
     # important for our application.
     stack = []
 
+    # This list holds previous copies of the stack - useful to undo state
+    # change.
+    undo_list = []
+
     # Now add a few functions that make things easier for us to
     # manipulate the stack.
     def add(self, task):
         """Adds a task to stack. Always converts text string to UTF-8."""
-        # Create a unicode object from the text string (or utf object)
+        self.save_state()
+
         task = task.encode('utf-8')
-        # Save into the stack
         self.stack.append(task)
 
     def done(self):
         """Marks a task as done, and removes it from the stack.
         Returns a UTF-8 object."""
-        # Temporarily store the task
+        self.save_state()
+
         task = self.stack.pop()
-        # Return it to the calling function
         return task
 
     def next(self):
         """Returns the topmost task in the stack."""
-        # Using -1 as index gives the last element in a list
+        self.save_state()
+
         task = self.stack[-1]
         return task
+
+    def save_state(self):
+        """Saves current state of stack into undo_list.
+        Versions of our stack are stored into another stack ;)
+        """
+        current_state = copy.deepcopy(self.stack)
+        self.undo_list.append(current_state)
+
 
     def undo(self):
         """Reverses last action, allows user to make mistakes."""
@@ -66,6 +80,10 @@ class TodoStack:
         # Before we implement this, we need to store the previous
         # actions or states so that we know what to reverse.
 
+        # Coming back... since we have the whole state stored, we
+        # simply restore it back!
+        self.stack = self.undo_list.pop()
+
 
 # Also, let us add some code here which will be run whenever this file is
 # run via the python command instead of simply importing.
@@ -77,22 +95,20 @@ if __name__ == '__main__':
     mystack = TodoStack()
 
     # Add an item into the stack
-    mystack.add(u'this is a tad bit better')
-    mystack.add(u'something else to do')
-    mystack.add(u'a little more')
+    mystack.add(u'get a chai')
+    mystack.add(u'get a cookie')
+    mystack.add(u'blabber a bit')
 
-    # That little u in front of the string tells Python that we are dealing
-    # with Unicode strings - they let us handle all languages and characters.
-    # http://eric.themoritzfamily.com/python-encodings-and-unicode.html
-
-    # Check if that actually worked
     print mystack.stack
+    print mystack.undo_list
+    print "-"*30
 
-    # Remove the item
-    item = mystack.done()
+    mystack.undo()
+    print mystack.stack
+    print mystack.undo_list
+    print "-"*30
 
-    # Popping a stack returns the topmost item
-    print item
-
-    # Check next task
-    print mystack.next()
+    mystack.undo()
+    print mystack.stack
+    print mystack.undo_list
+    print "-"*30
