@@ -52,6 +52,20 @@ class TodoStack:
         task = self.stack[-1]
         return task
 
+    def undo(self):
+        """Reverses last action, allows user to make mistakes."""
+        # Now this is an important function to have in an application
+        # where the user is constantly interacting, especially in
+        # text format - we all make mistakes and it is painful to
+        # be forced to type out everything once again if you
+        # accidentally mark a task as done.
+        #
+        # We are adding this feature early-on because it needs to be
+        # planned in advance: retro-fitting is usually not a fun task.
+        #
+        # Before we implement this, we need to store the previous
+        # actions or states so that we know what to reverse.
+
 
 # Also, let us add some code here which will be run whenever this file is
 # run via the python command instead of simply importing.
