@@ -46,6 +46,11 @@ class TodoStack:
         # Return it to the calling function
         return task
 
+    def next(self):
+        """Returns the topmost task in the stack."""
+        # Using -1 as index gives the last element in a list
+        task = self.stack[-1]
+        return task
 
 
 # Also, let us add some code here which will be run whenever this file is
@@ -59,6 +64,8 @@ if __name__ == '__main__':
 
     # Add an item into the stack
     mystack.add(u'this is a tad bit better')
+    mystack.add(u'something else to do')
+    mystack.add(u'a little more')
 
     # That little u in front of the string tells Python that we are dealing
     # with Unicode strings - they let us handle all languages and characters.
@@ -72,3 +79,6 @@ if __name__ == '__main__':
 
     # Popping a stack returns the topmost item
     print item
+
+    # Check next task
+    print mystack.next()
