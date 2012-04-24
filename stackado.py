@@ -79,7 +79,7 @@ class TodoStack:
             # get previous state from undo_list
             self.stack = self.undo_list.pop()
         except:
-            raise
+            pass
 
     def redo(self):
         """Un-does undo. Gets reset by save_undo()
@@ -91,7 +91,7 @@ class TodoStack:
             # get state from redo_list
             self.stack = self.redo_list.pop()
         except:
-            raise
+            pass
 
 
     def dump_state(self):
