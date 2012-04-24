@@ -7,6 +7,28 @@ into the art of inception ;-)
 
 ## Usage:
 
-Running on your own machine, locally:
+### Running on your own machine, locally:
 
     python todo.py
+
+
+### Commands
+
+#### Add a task
+    a <task>
+
+#### Mark a task as done
+    d
+
+#### Check next task
+    n
+
+#### List of all pending tasks
+    l
+
+#### Undo last action
+    undo
+
+#### Redo last undo
+    redo
+
