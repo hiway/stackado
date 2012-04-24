@@ -38,9 +38,11 @@ class TodoStack:
     def done(self):
         """Marks a task as done, and removes it from the stack."""
         self.save_undo()
-
-        task = self.stack.pop()
-        return task.encode('utf-8')
+        try:
+            task = self.stack.pop()
+            return task.encode('utf-8')
+        except:
+            return None
 
     def next(self):
         """Returns the topmost task in the stack."""
