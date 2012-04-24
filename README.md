@@ -9,5 +9,4 @@ into the art of inception ;-)
 
 Running on your own machine, locally:
 
-    python gtd_shell.py
-    
+    python todo.py

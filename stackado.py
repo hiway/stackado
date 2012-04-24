@@ -111,3 +111,9 @@ class TodoStack:
         self.stack = state['stack']
         self.undo_list = state['undo_list']
         self.redo_list = state['redo_list']
+
+
+    def parse_command(self, line):
+        """Expects a string, parses commands and executes actions
+        and returns results."""
+        return "TODO: Make this work!"
