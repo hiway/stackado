@@ -32,20 +32,20 @@ class TodoStack:
 
     def done(self):
         """Marks a task as done, and removes it from the stack."""
-        self.save_undo()
         try:
-            task = self.stack.pop()
-            return task.encode('utf-8')
+            self.save_undo()
+            self.stack.pop()
+            task = self.next()
+            return task
         except:
             return None
 
 
     def next(self):
         """Returns the topmost task in the stack."""
-        self.save_undo()
         try:
             task = self.stack[-1]
-            return task
+            return task.encode('utf-8')
         except:
             return None
 
@@ -57,6 +57,10 @@ class TodoStack:
         """
         current_state = copy.deepcopy(self.stack)
         self.undo_list.append(current_state)
+
+        # save limited undo steps
+        if len(self.undo_list) > 10:
+            self.undo_list.remove(self.undo_list[0])
 
         if reset_redo is True:
             self.redo_list = []
@@ -129,6 +133,7 @@ class TodoStack:
             func = cmd[1]
 
             cregex = re.compile(regex)
+            line = line.lower().strip()
 
             r = cregex.match(line)
             if r is not None:

@@ -20,7 +20,9 @@ carry_on = True
 while carry_on is True:
     line = raw_input("> ")
     if line != 'q':
-        print stack.parse_command(line)
+        output = stack.parse_command(line)
+        if output is not None:
+            print output
 
         # Save state
         open(filename, 'w+').write(stack.dump_state())
