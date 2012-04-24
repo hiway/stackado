@@ -55,7 +55,8 @@ class TodoStack:
 
     def save_undo(self, reset_redo=True):
         """Saves current state of stack into undo_list.
-        Versions of our stack are stored into another stack
+        Versions of our stack are stored into another stack.
+        Resets redo_list by default.
         """
         current_state = copy.deepcopy(self.stack)
         self.undo_list.append(current_state)
