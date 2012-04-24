@@ -23,23 +23,11 @@ import copy
 # every request since the state is always new for every request.
 
 class TodoStack:
-    """Holds a stack of TODOs."""
-    # Use a list to store the stack, simply because lists in Python have
-    # all the functions necessary for implementing stacks built into them.
-    # Also because lists maintain their order of elements, which is
-    # important for our application.
-    stack = []
+    """Holds and manipulates a stack of TODOs."""
+    stack = []  # Stack of TODO items
+    undo_list = []  # Stack of previous versions of 'stack'
+    redo_list = []  # Stack of undone versions of 'stack'
 
-    # This list holds previous copies of the stack - useful to undo state
-    # change.
-    undo_list = []
-
-    # Keeps a list of redo actions - whatever is undone can be redone
-    # However, it will be wiped out every time save_undo() is called
-    redo_list = []
-
-    # Now add a few functions that make things easier for us to
-    # manipulate the stack.
     def add(self, task):
         """Adds a task to stack. Always converts text string to UTF-8."""
         self.save_undo()
@@ -120,36 +108,3 @@ class TodoStack:
         self.stack = state['stack']
         self.undo_list = state['undo_list']
         self.redo_list = state['redo_list']
-
-
-# Also, let us add some code here which will be run whenever this file is
-# run via the python command instead of simply importing.
-# like: python stackado.py
-if __name__ == '__main__':
-    # This part is not executed if imported into another python file.
-
-    # Create an instance of TodoStack
-    mystack = TodoStack()
-
-    # Add an item into the stack
-    mystack.add(u'get a chai')
-    mystack.add(u'get a cookie')
-    mystack.add(u'blabber a bit')
-
-    print mystack.stack
-    print "-"*30
-
-    mystack.undo()
-    print mystack.stack
-    print "-"*30
-
-    mystack.redo()
-    print mystack.stack
-    print "-"*30
-
-    data = mystack.dump_state()
-    print data
-    yourstack = TodoStack()
-    yourstack.load_state(data)
-
-    print yourstack.dump_state()
