@@ -29,19 +29,18 @@ class TodoStack:
     redo_list = []  # Stack of undone versions of 'stack'
 
     def add(self, task):
-        """Adds a task to stack. Always converts text string to UTF-8."""
+        """Adds a task to stack."""
         self.save_undo()
 
-        task = task.encode('utf-8')
+        task = task.decode('utf-8')
         self.stack.append(task)
 
     def done(self):
-        """Marks a task as done, and removes it from the stack.
-        Returns a UTF-8 object."""
+        """Marks a task as done, and removes it from the stack."""
         self.save_undo()
 
         task = self.stack.pop()
-        return task
+        return task.encode('utf-8')
 
     def next(self):
         """Returns the topmost task in the stack."""
