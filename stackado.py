@@ -64,14 +64,13 @@ class TodoStack:
 
     def save_undo(self, reset_redo=True):
         """Saves current state of stack into undo_list.
-        Versions of our stack are stored into another stack ;)
+        Versions of our stack are stored into another stack
         """
         current_state = copy.deepcopy(self.stack)
         self.undo_list.append(current_state)
 
         if reset_redo is True:
             self.redo_list = []
-
 
     def save_redo(self):
         """Saves current state of stack into redo_list."""
@@ -109,6 +108,16 @@ class TodoStack:
             raise
 
 
+    def dump_state(self):
+        """Returns JSON string of full state of TodoStack object."""
+        state = {
+            'stack':self.stack,
+            'undo_list':self.undo_list,
+            'redo_list':self.redo_list,
+        }
+
+        return json.dumps(state)
+
 
 # Also, let us add some code here which will be run whenever this file is
 # run via the python command instead of simply importing.
@@ -134,3 +143,5 @@ if __name__ == '__main__':
     mystack.redo()
     print mystack.stack
     print "-"*30
+
+    print mystack.dump_state()
