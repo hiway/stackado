@@ -28,12 +28,14 @@ class TodoStack:
     undo_list = []  # Stack of previous versions of 'stack'
     redo_list = []  # Stack of undone versions of 'stack'
 
+
     def add(self, task):
         """Adds a task to stack."""
         self.save_undo()
 
         task = task.decode('utf-8')
         self.stack.append(task)
+
 
     def done(self):
         """Marks a task as done, and removes it from the stack."""
@@ -44,6 +46,7 @@ class TodoStack:
         except:
             return None
 
+
     def next(self):
         """Returns the topmost task in the stack."""
         self.save_undo()
@@ -52,6 +55,7 @@ class TodoStack:
             return task
         except:
             return None
+
 
     def save_undo(self, reset_redo=True):
         """Saves current state of stack into undo_list.
@@ -64,10 +68,12 @@ class TodoStack:
         if reset_redo is True:
             self.redo_list = []
 
+
     def save_redo(self):
         """Saves current state of stack into redo_list."""
         current_state = copy.deepcopy(self.stack)
         self.redo_list.append(current_state)
+
 
     def undo(self):
         """Reverses last action, allows user to make mistakes."""
@@ -80,6 +86,7 @@ class TodoStack:
             self.stack = self.undo_list.pop()
         except:
             pass
+
 
     def redo(self):
         """Un-does undo. Gets reset by save_undo()
@@ -103,6 +110,7 @@ class TodoStack:
         }
 
         return json.dumps(state)
+
 
     def load_state(self, data):
         """Expects JSON string as saved by dump_state, loads the data into
