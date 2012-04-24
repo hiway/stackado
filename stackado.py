@@ -11,7 +11,7 @@
     todo-stack.
 
 """
-
+import re
 import json
 import copy
 
@@ -116,4 +116,22 @@ class TodoStack:
     def parse_command(self, line):
         """Expects a string, parses commands and executes actions
         and returns results."""
-        return "TODO: Make this work!"
+        cmdmap = (
+            ('^a (?P<task>(.*))$',self.add),
+            ('^d$',self.done),
+            ('^n$',self.next),
+            ('^undo$',self.undo),
+            ('^redo$',self.redo),
+        )
+
+        for cmd in cmdmap:
+            regex = cmd[0]
+            func = cmd[1]
+
+            cregex = re.compile(regex)
+
+            r = cregex.match(line)
+            if r is not None:
+                kwargs = r.groupdict()
+                return func(**kwargs)
+
