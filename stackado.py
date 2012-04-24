@@ -47,9 +47,11 @@ class TodoStack:
     def next(self):
         """Returns the topmost task in the stack."""
         self.save_undo()
-
-        task = self.stack[-1]
-        return task
+        try:
+            task = self.stack[-1]
+            return task
+        except:
+            return None
 
     def save_undo(self, reset_redo=True):
         """Saves current state of stack into undo_list.
