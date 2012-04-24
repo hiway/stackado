@@ -79,12 +79,6 @@ class TodoStack:
 
     def undo(self):
         """Reverses last action, allows user to make mistakes."""
-        # Now this is an important function to have in an application
-        # where the user is constantly interacting, especially in
-        # text format - we all make mistakes and it is painful to
-        # be forced to type out everything once again if you
-        # accidentally mark a task as done.
-        #
         # Since we have the whole state stored in self.undo_list, we
         # simply restore it back!
         try:
@@ -118,6 +112,15 @@ class TodoStack:
 
         return json.dumps(state)
 
+    def load_state(self, data):
+        """Expects JSON string as saved by dump_state, loads the data into
+        object's data structures."""
+        state = json.loads(data)
+
+        self.stack = state['stack']
+        self.undo_list = state['undo_list']
+        self.redo_list = state['redo_list']
+
 
 # Also, let us add some code here which will be run whenever this file is
 # run via the python command instead of simply importing.
@@ -144,4 +147,9 @@ if __name__ == '__main__':
     print mystack.stack
     print "-"*30
 
-    print mystack.dump_state()
+    data = mystack.dump_state()
+    print data
+    yourstack = TodoStack()
+    yourstack.load_state(data)
+
+    print yourstack.dump_state()
