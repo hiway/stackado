@@ -50,6 +50,17 @@ class TodoStack:
             return None
 
 
+    def list(self):
+        """Returns a list of all pending tasks."""
+        nlist = []
+        x = len(self.stack)
+        for task in self.stack:
+            nlist.append("%d. %s" %(x, task))
+            x -= 1
+
+        return '\n'.join(nlist)
+
+
     def save_undo(self, reset_redo=True):
         """Saves current state of stack into undo_list.
         Versions of our stack are stored into another stack.
@@ -124,6 +135,7 @@ class TodoStack:
             ('^a (?P<task>(.*))$',self.add),
             ('^d$',self.done),
             ('^n$',self.next),
+            ('^l$',self.list),
             ('^undo$',self.undo),
             ('^redo$',self.redo),
         )
