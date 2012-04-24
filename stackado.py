@@ -12,15 +12,8 @@
 
 """
 
-# We'll be using json to save user's data into files for persistent memory.
 import json
 import copy
-
-# Let us define a class to hold the data and manipulate it. Having a class
-# allows us to create one instance of the object and hold it in memory
-# without re-loading the data over and over again - useful in apps that
-# work on desktop. Web-applications will need to create an instance for
-# every request since the state is always new for every request.
 
 class TodoStack:
     """Holds and manipulates a stack of TODOs."""
@@ -77,8 +70,6 @@ class TodoStack:
 
     def undo(self):
         """Reverses last action, allows user to make mistakes."""
-        # Since we have the whole state stored in self.undo_list, we
-        # simply restore it back!
         try:
             # store current state in redo_list
             self.save_redo()
