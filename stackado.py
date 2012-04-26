@@ -95,7 +95,11 @@ class TodoStack:
     def undo(self, x=1):
         """Reverses last action, allows user to make mistakes."""
         x = int(x)
-        while(x):
+
+        if x > len(self.undo_list):
+            return 'Can undo %s times!' % len(self.undo_list)
+
+        while x:
             try:
                 # store current state in redo_list
                 self.save_redo()
@@ -105,17 +109,28 @@ class TodoStack:
                 pass
             x -= 1
 
-    def redo(self):
+        return 'OK'
+
+    def redo(self, x=1):
         """Un-does undo. Gets reset by save_undo()
         A user can call redo only if they are not changing the state
         in between consecutive undo and redo."""
-        try:
-            # save current state into undo_list
-            self.save_undo(reset_redo=False)
-            # get state from redo_list
-            self.stack = self.redo_list.pop()
-        except:
-            pass
+        x = int(x)
+
+        if x > len(self.redo_list):
+            return 'Can redo %s times!' % len(self.redo_list)
+
+        while x:
+            try:
+                # save current state into undo_list
+                self.save_undo(reset_redo=False)
+                # get state from redo_list
+                self.stack = self.redo_list.pop()
+            except:
+                pass
+            x -= 1
+
+        return 'OK'
 
     def dump_state(self):
         """Returns JSON string of full state of TodoStack object."""
@@ -150,6 +165,7 @@ class TodoStack:
             ('^undo$', self.undo),
             ('^undo (?P<x>(\d+))$', self.undo),
             ('^redo$', self.redo),
+            ('^redo (?P<x>(\d+))$', self.redo),
         )
 
         for cmd in cmdmap:
