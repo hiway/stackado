@@ -2,7 +2,8 @@
 
 # importing readling makes raw_input behave better
 # refer: http://docs.python.org/library/functions.html#raw_input
-import readline
+
+import readline  # NOQA
 import stackado
 
 stack = stackado.TodoStack()
@@ -29,4 +30,3 @@ while carry_on is True:
 
     else:
         carry_on = False
-
