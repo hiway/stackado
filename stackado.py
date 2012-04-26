@@ -39,7 +39,7 @@ class TodoStack:
                 task = self.current()
                 return 'DO: %s' % (task)
             except:
-                return None
+                return 'There are no tasks to mark done!'
         else:
             # Here, we simply use previously created code that does the job
             # make the given task as current, and mark as done.
@@ -56,7 +56,7 @@ class TodoStack:
                 task = self.stack[-1]
                 return task
             except:
-                return None
+                return 'Nothing more to do!'
         else:
             self.save_undo()
             try:
