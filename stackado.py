@@ -44,7 +44,6 @@ class TodoStack:
             self.current(task)
             return self.done()
 
-
     def current(self, task=None):
         """Returns the topmost task in the stack."""
         if task is None:
@@ -93,15 +92,18 @@ class TodoStack:
         current_state = copy.deepcopy(self.stack)
         self.redo_list.append(current_state)
 
-    def undo(self):
+    def undo(self, x=1):
         """Reverses last action, allows user to make mistakes."""
-        try:
-            # store current state in redo_list
-            self.save_redo()
-            # get previous state from undo_list
-            self.stack = self.undo_list.pop()
-        except:
-            pass
+        x = int(x)
+        while(x):
+            try:
+                # store current state in redo_list
+                self.save_redo()
+                # get previous state from undo_list
+                self.stack = self.undo_list.pop()
+            except:
+                pass
+            x -= 1
 
     def redo(self):
         """Un-does undo. Gets reset by save_undo()
@@ -146,6 +148,7 @@ class TodoStack:
             ('^l$', self.list),
             ('^ls$', self.list),
             ('^undo$', self.undo),
+            ('^undo (?P<x>(\d+))$', self.undo),
             ('^redo$', self.redo),
         )
 
