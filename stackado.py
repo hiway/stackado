@@ -34,8 +34,8 @@ class TodoStack:
         try:
             self.save_undo()
             self.stack.pop()
-            task = self.next()
-            return task
+            task = self.current()
+            return 'DO: %s' % (task)
         except:
             return None
 
@@ -44,14 +44,18 @@ class TodoStack:
         if task is None:
             try:
                 task = self.stack[-1]
-                return task.encode('utf-8')
+                return task
             except:
                 return None
         else:
-            task = self.stack[-int(task)].encode('utf-8')
-            self.stack.remove(task)
-            self.stack.append(task)
-            return task
+            self.save_undo()
+            try:
+                task = self.stack[-int(task)]
+                self.stack.remove(task)
+                self.stack.append(task)
+                return task
+            except:
+                return 'Task (%s) could not be found.' % (task)
 
     def list(self):
         """Returns a list of all pending tasks."""
@@ -150,4 +154,4 @@ class TodoStack:
                 kwargs = r.groupdict()
                 return func(**kwargs)
 
-        return "!"
+        return None
