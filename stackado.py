@@ -28,16 +28,22 @@ class TodoStack:
 
         task = task.decode('utf-8')
         self.stack.append(task)
+        return 'DO: %s' % (task)
 
-    def done(self):
+    def done(self, task=None):
         """Marks a task as done, and removes it from the stack."""
-        try:
-            self.save_undo()
-            self.stack.pop()
-            task = self.current()
-            return 'DO: %s' % (task)
-        except:
-            return None
+        if task is None:
+            try:
+                self.save_undo()
+                self.stack.pop()
+                task = self.current()
+                return 'DO: %s' % (task)
+            except:
+                return None
+        else:
+            self.current(task)
+            return self.done()
+
 
     def current(self, task=None):
         """Returns the topmost task in the stack."""
@@ -134,6 +140,7 @@ class TodoStack:
         cmdmap = (
             ('^a (?P<task>(.*))$', self.add),
             ('^d$', self.done),
+            ('^d (?P<task>(\d+))$', self.done),
             ('^c$', self.current),
             ('^c (?P<task>(\d+))$', self.current),
             ('^l$', self.list),
