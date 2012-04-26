@@ -41,7 +41,12 @@ class TodoStack:
             except:
                 return None
         else:
-            self.current(task)
+            # Here, we simply use previously created code that does the job
+            # make the given task as current, and mark as done.
+            output = self.current(task)
+            if 'could not be found' in output:
+                return output
+
             return self.done()
 
     def current(self, task=None):
