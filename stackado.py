@@ -126,6 +126,7 @@ class TodoStack:
             ('^d$', self.done),
             ('^n$', self.next),
             ('^l$', self.list),
+            ('^ls$', self.list),
             ('^undo$', self.undo),
             ('^redo$', self.redo),
         )
