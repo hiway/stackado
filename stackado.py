@@ -1,6 +1,6 @@
 """
     Stackado
-================================================================================
+===============================================================================
 
     Stack-a-do, a task management system that lets you get distracted or dig
     deeper into the task at hand and come back to whatever you were doing.
@@ -15,12 +15,12 @@ import re
 import json
 import copy
 
+
 class TodoStack:
     """Holds and manipulates a stack of TODOs."""
     stack = []  # Stack of TODO items
     undo_list = []  # Stack of previous versions of 'stack'
     redo_list = []  # Stack of undone versions of 'stack'
-
 
     def add(self, task):
         """Adds a task to stack."""
@@ -28,7 +28,6 @@ class TodoStack:
 
         task = task.decode('utf-8')
         self.stack.append(task)
-
 
     def done(self):
         """Marks a task as done, and removes it from the stack."""
@@ -40,7 +39,6 @@ class TodoStack:
         except:
             return None
 
-
     def next(self):
         """Returns the topmost task in the stack."""
         try:
@@ -49,17 +47,15 @@ class TodoStack:
         except:
             return None
 
-
     def list(self):
         """Returns a list of all pending tasks."""
         nlist = []
         x = len(self.stack)
         for task in self.stack:
-            nlist.append("%d. %s" %(x, task))
+            nlist.append("%d. %s" % (x, task))
             x -= 1
 
         return '\n'.join(nlist)
-
 
     def save_undo(self, reset_redo=True):
         """Saves current state of stack into undo_list.
@@ -76,12 +72,10 @@ class TodoStack:
         if reset_redo is True:
             self.redo_list = []
 
-
     def save_redo(self):
         """Saves current state of stack into redo_list."""
         current_state = copy.deepcopy(self.stack)
         self.redo_list.append(current_state)
-
 
     def undo(self):
         """Reverses last action, allows user to make mistakes."""
@@ -92,7 +86,6 @@ class TodoStack:
             self.stack = self.undo_list.pop()
         except:
             pass
-
 
     def redo(self):
         """Un-does undo. Gets reset by save_undo()
@@ -106,17 +99,15 @@ class TodoStack:
         except:
             pass
 
-
     def dump_state(self):
         """Returns JSON string of full state of TodoStack object."""
         state = {
-            'stack':self.stack,
-            'undo_list':self.undo_list,
-            'redo_list':self.redo_list,
+            'stack': self.stack,
+            'undo_list': self.undo_list,
+            'redo_list': self.redo_list,
         }
 
         return json.dumps(state)
-
 
     def load_state(self, data):
         """Expects JSON string as saved by dump_state, loads the data into
@@ -127,17 +118,16 @@ class TodoStack:
         self.undo_list = state['undo_list']
         self.redo_list = state['redo_list']
 
-
     def parse_command(self, line):
         """Expects a string, parses commands and executes actions
         and returns results."""
         cmdmap = (
-            ('^a (?P<task>(.*))$',self.add),
-            ('^d$',self.done),
-            ('^n$',self.next),
-            ('^l$',self.list),
-            ('^undo$',self.undo),
-            ('^redo$',self.redo),
+            ('^a (?P<task>(.*))$', self.add),
+            ('^d$', self.done),
+            ('^n$', self.next),
+            ('^l$', self.list),
+            ('^undo$', self.undo),
+            ('^redo$', self.redo),
         )
 
         for cmd in cmdmap:
@@ -151,4 +141,3 @@ class TodoStack:
             if r is not None:
                 kwargs = r.groupdict()
                 return func(**kwargs)
-
