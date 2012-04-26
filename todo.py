@@ -24,7 +24,9 @@ while carry_on is True:
         output = stack.parse_command(line)
         if output is not None:
             print output
-
+        else:
+            print "Did not understand the command!"
+            
         # Save state
         open(filename, 'w+').write(stack.dump_state())
 
