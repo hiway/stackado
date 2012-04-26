@@ -39,13 +39,19 @@ class TodoStack:
         except:
             return None
 
-    def next(self):
+    def current(self, task=None):
         """Returns the topmost task in the stack."""
-        try:
-            task = self.stack[-1]
-            return task.encode('utf-8')
-        except:
-            return None
+        if task is None:
+            try:
+                task = self.stack[-1]
+                return task.encode('utf-8')
+            except:
+                return None
+        else:
+            task = self.stack[-int(task)].encode('utf-8')
+            self.stack.remove(task)
+            self.stack.append(task)
+            return task
 
     def list(self):
         """Returns a list of all pending tasks."""
@@ -124,7 +130,8 @@ class TodoStack:
         cmdmap = (
             ('^a (?P<task>(.*))$', self.add),
             ('^d$', self.done),
-            ('^n$', self.next),
+            ('^c$', self.current),
+            ('^c (?P<task>(\d+))$', self.current),
             ('^l$', self.list),
             ('^ls$', self.list),
             ('^undo$', self.undo),
@@ -142,3 +149,5 @@ class TodoStack:
             if r is not None:
                 kwargs = r.groupdict()
                 return func(**kwargs)
+
+        return "!"
