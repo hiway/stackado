@@ -74,6 +74,27 @@ class TodoStack:
 
         return '\n'.join(nlist)
 
+    def swap(self, t1, t2):
+        """Swaps positions of two tasks."""
+        self.save_undo()
+
+        t1 = int(t1)
+        t2 = int(t2)
+
+        if t1 > t2:
+            t = t1
+            t1 = t2
+            t2 = t
+
+        task1 = self.stack[-t1]
+        task2 = self.stack[-t2]
+        self.stack.remove(task1)
+        self.stack.remove(task2)
+        self.stack.insert(-t2+2, task1)
+        self.stack.insert(-t1+1, task2)
+
+        return 'OK'
+
     def save_undo(self, reset_redo=True):
         """Saves current state of stack into undo_list.
         Versions of our stack are stored into another stack.
@@ -168,6 +189,7 @@ class TodoStack:
             ('^undo (?P<x>(\d+))$', self.undo),
             ('^redo$', self.redo),
             ('^redo (?P<x>(\d+))$', self.redo),
+            ('^swap (?P<t1>(\d+)) (?P<t2>(\d+))$', self.swap),
         )
 
         for cmd in cmdmap:
