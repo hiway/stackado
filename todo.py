@@ -21,12 +21,16 @@ carry_on = True
 while carry_on is True:
     line = raw_input("> ")
     if line != 'q':
-        output = stack.parse_command(line)
+        try:
+            output = stack.parse_command(line)
+        except Exception, e:
+            output = e
+
         if output is not None:
             print output
         else:
             print "Did not understand the command!"
-            
+
         # Save state
         open(filename, 'w+').write(stack.dump_state())
 
