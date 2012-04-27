@@ -44,9 +44,6 @@ class TodoStack:
             # Here, we simply use previously created code that does the job
             # make the given task as current, and mark as done.
             output = self.current(task)
-            if 'could not be found' in output:
-                return output
-
             return self.done()
 
     def current(self, task=None):
@@ -64,8 +61,8 @@ class TodoStack:
                 self.stack.remove(task)
                 self.stack.append(task)
                 return task
-            except:
-                return 'Task (%s) could not be found.' % (task)
+            except IndexError:
+                raise IndexError('Task (%s) could not be found.' % (task))
 
     def list(self):
         """Returns a list of all pending tasks."""
