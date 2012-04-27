@@ -95,6 +95,30 @@ class TodoStack:
 
         return 'OK'
 
+    def move(self, x, y=None):
+        """Moves current task to another position.
+        If given two positions, moves task x to y."""
+        self.save_undo()
+
+        x = int(x)
+        if y is None:
+            y = x
+            x = 1
+        else:
+            y = int(y)
+
+        if x > len(self.stack) or y > len(self.stack):
+            raise IndexError('Cannot move task %s to %s, out of index!' % (x, y))
+
+        task = self.stack[-x]
+        self.stack.remove(task)
+        if y == 1:
+            self.stack.append(task)
+        else:
+            self.stack.insert(-y+1, task)
+
+        return 'OK'
+
     def save_undo(self, reset_redo=True):
         """Saves current state of stack into undo_list.
         Versions of our stack are stored into another stack.
@@ -190,6 +214,8 @@ class TodoStack:
             ('^redo$', self.redo),
             ('^redo (?P<x>(\d+))$', self.redo),
             ('^swap (?P<t1>(\d+)) (?P<t2>(\d+))$', self.swap),
+            ('^move (?P<x>(\d+))$', self.move),
+            ('^move (?P<x>(\d+)) (?P<y>(\d+))$', self.move),
         )
 
         for cmd in cmdmap:
