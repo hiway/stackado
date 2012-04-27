@@ -52,8 +52,8 @@ class TodoStack:
             try:
                 task = self.stack[-1]
                 return task
-            except:
-                return 'Nothing more to do!'
+            except IndexError:
+                raise IndexError('Nothing more to do!')
         else:
             self.save_undo()
             try:
@@ -107,8 +107,8 @@ class TodoStack:
                 self.save_redo()
                 # get previous state from undo_list
                 self.stack = self.undo_list.pop()
-            except:
-                pass
+            except IndexError:
+                raise IndexError('Cannot undo any further!')
             x -= 1
 
         return 'OK'
@@ -128,8 +128,8 @@ class TodoStack:
                 self.save_undo(reset_redo=False)
                 # get state from redo_list
                 self.stack = self.redo_list.pop()
-            except:
-                pass
+            except IndexError:
+                raise IndexError('Cannot redo any further!')
             x -= 1
 
         return 'OK'
