@@ -230,4 +230,5 @@ class TodoStack:
                 kwargs = r.groupdict()
                 return func(**kwargs)
 
-        return None
+        # Adding compulsory hurry-mode        
+        return self.add(line)
