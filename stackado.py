@@ -231,4 +231,5 @@ class TodoStack:
                 return func(**kwargs)
 
         # Adding compulsory hurry-mode        
-        return self.add(line)
+        if line.strip():
+            return self.add(line)
