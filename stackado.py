@@ -233,3 +233,5 @@ class TodoStack:
         # Adding compulsory hurry-mode        
         if line.strip():
             return self.add(line)
+        else:
+            return self.current()
