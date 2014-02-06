@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# importing readling makes raw_input behave better
+# importing readline makes raw_input behave better
 # refer: http://docs.python.org/library/functions.html#raw_input
 
 import readline  # NOQA
