@@ -11,11 +11,18 @@ into yak shaving.
 
     python todo.py
 
-
 ### Commands
 
 #### Add a task
+
+    Type a task and hit enter, if it does not match any of the commands - 
+    it is automatically considered as a new task. Or if you want to keep a
+    consistent command pattern - type `a` followed by task and hit enter.
+    
     a <task>
+
+#### Show current task
+    <enter> without any keys typed at the prompt.
 
 #### Mark a task as done
     d
